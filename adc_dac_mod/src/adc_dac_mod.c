@@ -115,7 +115,31 @@ int main(void)
 {
    /* Starts the operating system in the Application Mode 1 */
    /* This example has only one Application Mode */
-   StartOS(AppMode1);
+					   //ENABLE IMPUTS
+	ADC_CLOCK_SETUP_T ADCSetup;
+	/* Initialized to default values:
+	*   - Sample rate:ADC_MAX_SAMPLE_RATE=400KHz
+	*   - resolution: ADC_10BITS
+	*   - burst mode: DISABLE */
+	Chip_ADC_Init( LPC_ADC0, &ADCSetup );
+	/* Disable burst mode */
+	Chip_ADC_SetBurstCmd( LPC_ADC0, DISABLE );
+	/* Set sample rate to 200KHz */
+	Chip_ADC_SetSampleRate( LPC_ADC0, &ADCSetup, ADC_MAX_SAMPLE_RATE/2 );
+	/* Disable all channels */
+	Chip_ADC_EnableChannel( LPC_ADC0,ADC_CH1, ENABLE );
+	Chip_ADC_Int_SetChannelCmd( LPC_ADC0, ADC_CH1, ENABLE );
+
+	Chip_ADC_EnableChannel( LPC_ADC0, ADC_CH2, DISABLE );
+	Chip_ADC_Int_SetChannelCmd( LPC_ADC0, ADC_CH2, DISABLE );
+
+	Chip_ADC_EnableChannel( LPC_ADC0, ADC_CH3, DISABLE );
+	Chip_ADC_Int_SetChannelCmd( LPC_ADC0, ADC_CH3, DISABLE );
+
+	Chip_ADC_EnableChannel( LPC_ADC0, ADC_CH4, DISABLE );
+	Chip_ADC_Int_SetChannelCmd( LPC_ADC0, ADC_CH4, DISABLE );
+
+	StartOS(AppMode1);
 
    /* StartOs shall never returns, but to avoid compiler warnings or errors
     * 0 is returned */
@@ -166,30 +190,6 @@ TASK(InitTask)
    ciaaPOSIX_ioctl(fd_dac, ciaaPOSIX_IOCTL_SET_SAMPLE_RATE, 100000);
 
    /* end InitTask */
-   	   	   	   	   	   	   	   	   //ENABLE IMPUTS
-   ADC_CLOCK_SETUP_T ADCSetup;
-   /* Initialized to default values:
-   		   *   - Sample rate:ADC_MAX_SAMPLE_RATE=400KHz
-   		   *   - resolution: ADC_10BITS
-   		   *   - burst mode: DISABLE */
-	Chip_ADC_Init( LPC_ADC0, &ADCSetup );
-	/* Disable burst mode */
-	Chip_ADC_SetBurstCmd( LPC_ADC0, DISABLE );
-	/* Set sample rate to 200KHz */
-	Chip_ADC_SetSampleRate( LPC_ADC0, &ADCSetup, ADC_MAX_SAMPLE_RATE/2 );
-	/* Disable all channels */
-	Chip_ADC_EnableChannel( LPC_ADC0,ADC_CH1, DISABLE );
-	Chip_ADC_Int_SetChannelCmd( LPC_ADC0, ADC_CH1, DISABLE );
-
-	Chip_ADC_EnableChannel( LPC_ADC0, ADC_CH2, DISABLE );
-	Chip_ADC_Int_SetChannelCmd( LPC_ADC0, ADC_CH2, DISABLE );
-
-	Chip_ADC_EnableChannel( LPC_ADC0, ADC_CH3, DISABLE );
-	Chip_ADC_Int_SetChannelCmd( LPC_ADC0, ADC_CH3, DISABLE );
-
-	Chip_ADC_EnableChannel( LPC_ADC0, ADC_CH4, DISABLE );
-	Chip_ADC_Int_SetChannelCmd( LPC_ADC0, ADC_CH4, DISABLE );
-
 
    TerminateTask();
 }
@@ -224,36 +224,27 @@ TASK(Analogic2)
    /* end of Blinking */
 	//uint8_t lpcAdcChannel = 66 ; //modificado para tomar desde A0
 	uint16_t analogValue = 0;
-<<<<<<< HEAD
-=======
 	float dato=0;
->>>>>>> a1fcb9173a12ffbd2124ad2555eedf7bbd2e8501
 	 /* typedef enum CHIP_ADC_CHANNEL {
-			ADC_CH0 = 0,	< ADC channel 0
-				ADC_CH1,		/**< ADC channel 1
-				ADC_CH2,		/**< ADC channel 2
-				ADC_CH3,		/**< ADC channel 3
-				ADC_CH4,		/**< ADC channel 4
-				ADC_CH5,		/**< ADC channel 5
-				ADC_CH6,		/**< ADC channel 6
-				ADC_CH7,		/**< ADC channel 7
-			} ADC_CHANNEL_T;*/
+		ADC_CH0 = 0,	< ADC channel 0
+			ADC_CH1,		/**< ADC channel 1
+			ADC_CH2,		/**< ADC channel 2
+			ADC_CH3,		/**< ADC channel 3
+			ADC_CH4,		/**< ADC channel 4
+			ADC_CH5,		/**< ADC channel 5
+			ADC_CH6,		/**< ADC channel 6
+			ADC_CH7,		/**< ADC channel 7
+		} ADC_CHANNEL_T;*/
 
-		//Chip_ADC_EnableChannel(LPC_ADC0, lpcAdcChannel, ENABLE);
-		Chip_ADC_EnableChannel(LPC_ADC0, ADC_CH0, ENABLE);
-		Chip_ADC_SetStartMode(LPC_ADC0, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
-		while( (Chip_ADC_ReadStatus(LPC_ADC0, ADC_CH0, ADC_DR_DONE_STAT) != SET) );
+	//Chip_ADC_EnableChannel(LPC_ADC0, lpcAdcChannel, ENABLE);
+	Chip_ADC_EnableChannel(LPC_ADC0, ADC_CH1, ENABLE);
+	Chip_ADC_SetStartMode(LPC_ADC0, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
+	while( (Chip_ADC_ReadStatus(LPC_ADC0, ADC_CH1, ADC_DR_DONE_STAT) != SET) );
 
-		Chip_ADC_ReadValue( LPC_ADC0, ADC_CH0, &analogValue );
-<<<<<<< HEAD
+	Chip_ADC_ReadValue( LPC_ADC0, ADC_CH1, &analogValue );
 
-=======
-		dato= (5*analogValue/1023);
-		ciaaPOSIX_printf ("El valor de adc es:%d\r\n",analogValue);
-		ciaaPOSIX_printf ("El valor de tension es:%f\r\n",dato);
->>>>>>> a1fcb9173a12ffbd2124ad2555eedf7bbd2e8501
-		Chip_ADC_EnableChannel( LPC_ADC0, ADC_CH0, DISABLE );
-
+	Chip_ADC_EnableChannel( LPC_ADC0, ADC_CH1, DISABLE );
+	dato= (5.0*analogValue/1023);
 	//ciaaPOSIX_printf(&analogValue);
 
    TerminateTask();
