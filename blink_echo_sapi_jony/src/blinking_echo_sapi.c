@@ -212,7 +212,7 @@ TASK(SerialEchoTask)
    int8_t buf[20];   /* buffer for uart operation              */
    uint8_t outputs;  /* to store outputs status                */
    int32_t ret;      /* return value variable for posix calls  */
-   uint8_t word[4];
+   uint8_t word[5];
    int i=0;
    while(1)
    {
@@ -237,18 +237,23 @@ TASK(SerialEchoTask)
 
 
 
-	        if(i>3){ // si i es mayor a 3 controlo los caracteres ingresados en el arreglo
+	        if(i>4){ // si i es mayor a 4 controlo los caracteres ingresados en el arreglo
 
 	        	  i=0;
-	             if(word[0]=='A'&& word[1]=='Z'&& word[2]=='U'&& word[3]=='L'){ // si se escribe AZUL enciende el led correspondiente
+	             if(word[0]=='t'&& word[1]=='o'&& word[2]=='d'&& word[3]=='o' && word[4]=='s'){ // si se escribe "todos" enciende todos los leds.
 
 	                 digitalWrite( LEDB, ON ); //enciendo led azul
-	                 digitalWrite( LEDR, OFF ); //apago led rojo
-	                 digitalWrite( LEDG, OFF ); // apago led verde
+	                 digitalWrite( LEDR, ON ); //enciendo led rojo
+	                 digitalWrite( LEDG, ON ); // enciendo led verde
+	                 digitalWrite( LED1, ON ); //enciendo led 1
+	                 digitalWrite( LED2, ON ); //enciendo led 2
+	                 digitalWrite( LED3, ON ); // enciendo led 3
+
 	                 word[0]=0;
 	                 word[1]=0;
 	                 word[2]=0;
 	                 word[3]=0;
+	                 word[4]=0;
 
 
 	             }
@@ -257,6 +262,7 @@ TASK(SerialEchoTask)
 	                 word[1]=0;
 	            	 word[2]=0;
 	            	 word[3]=0;
+	            	 word[4]=0;
 	             }
              }
 
