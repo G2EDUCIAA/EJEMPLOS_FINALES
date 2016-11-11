@@ -183,7 +183,7 @@ TASK(InitTask)
     *  - for the first time after 350 ticks (350 ms)
     *  - and then every 250 ticks (250 ms)
     */
-   SetRelAlarm(ActivatePeriodicTask, 350, 250);
+   ActivateTask(secuencia);
 
    /* terminate task */
    TerminateTask();
@@ -195,9 +195,11 @@ TASK(InitTask)
  * ActivatePeriodicTask expires.
  *
  */
-TASK(PeriodicTask2)
+TASK(secuencia)
 
-{   int tecla;
+{
+	while(1){
+	int tecla;
     int tecla2;
     tecla= Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, 0, 4);
 	int i=0;
@@ -233,24 +235,8 @@ TASK(PeriodicTask2)
 		i=0;
 
 	}
+}
 
-   /*if(Chip_GPIO_ReadPortBit( LPC_GPIO_PORT, 0, 14 )==true){
-	   /*Chip_GPIO_SetPinState( LPC_GPIO_PORT, 0, 14, FALSE);*/
-	 //  Chip_GPIO_SetPinState(LPC_GPIO_PORT, 0, 11, FALSE);
-	  /* Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 0, 14, false);
-
-	   Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 1, 11, false);
-
-	   Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 5, 2, false);
-   }
-   else{
-	  /* Chip_GPIO_SetPinState( LPC_GPIO_PORT, 0, 14, TRUE);
-	   Chip_GPIO_SetPinState( LPC_GPIO_PORT, 0, 11, TRUE);*/
-	  /* Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 0, 14, true);
-	   Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 1, 11, true);
-	   Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 5, 2, true);
-   }
-   */
 
    TerminateTask();
 }
